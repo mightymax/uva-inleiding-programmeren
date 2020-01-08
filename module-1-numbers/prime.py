@@ -1,7 +1,10 @@
 nthPrime = 0
 while nthPrime < 1:
     nthPrime = input("Which prime number are you looking for? ")
-    nthPrime = int(nthPrime)
+    nthPrimeAsFloat = float(nthPrime)
+    nthPrime = int(nthPrimeAsFloat)
+    if nthPrimeAsFloat - nthPrime > 0:
+        nthPrime = 0
 
 primeCount = 0 #Keep track of number of primes found so far
 number = 1 #Keep track of current number testing for prime
