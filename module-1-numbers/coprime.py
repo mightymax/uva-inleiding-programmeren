@@ -3,7 +3,7 @@
 # program that calculates the chance that two random whole numbers do not have a common divisor. Such a pair of numbers is called a coprime.
 # see https://progbg.mprog.nl/numbers/co-primes
 
-import random
+import random, math, sys
 
 def prime_factors(number):
     factors = []
@@ -35,18 +35,32 @@ def get_primes(n_max):
     number = 1 #Keep track of current number testing for prime
 
     primes = []
-
+    print("Getting primes (max = %d): " % n_max, end = "", flush = True)
+    sys.stdout.flush()
     while number < n_max:
         number = number + 1
+        
+        print(number, end = "", flush = True)
+        for _ in str(number):
+            print("\b", end = "", flush = True)
+        
         z = 0
         for i in range(2, number):
             if (number % i) == 0:
                 # not a prime
                 z = z + 1
+                break
 
         if z == 0:
             primes.append(number)
-    
+
+    #write blank spaces:
+    for _ in str(number):
+        print(" ", end = "", flush = True)
+    for _ in str(number):
+        print("\b", end = "", flush = True)
+
+    print("done")
     return primes
     
 def experiment(n_min = 10000, n_max = 100000, max_pairs = 10000):
@@ -58,23 +72,34 @@ def experiment(n_min = 10000, n_max = 100000, max_pairs = 10000):
         c += divisor_count(n1, n2)
         i += 1
         
-    fraction = c / max_pairs
+        print(i, end = "", flush = True)
+        for _ in str(i):
+            print("\b", end = "", flush = True)
+        
+    for _ in str(i):
+        print(" ", end = "", flush = True)
+    for _ in str(i):
+        print("\b", end = "", flush = True)
+
+    fraction = (max_pairs - c) / max_pairs
     return fraction
 
 
-def prediction(n):
-    #TODO: Write a function prediction(n) that predicts the theoretical chance of n numbers having no common divisors. This consists of not much more than calculating the Riemann zeta function yourself and with that determine the correct chance.
-    fraction = 0.666
-    return fraction
+def prediction():
+    #see https://en.wikipedia.org/wiki/Particular_values_of_the_Riemann_zeta_function
+    c =  (math.pi ** 2) / 6
+    return 1 / c
     
 
-n_min = 1000 #* 10
-n_max = 10000 #* 10
+
+n_min = 10000
+n_max = 100000
 max_pairs = 10000
 
 #Global var primes, used in functions
 primes = get_primes(n_max)
 
 print("The chance that two random numbers do not share a common divisor is:")
-print("    - prediction (mathematical): %0.3f" % prediction(1))
-print("    - empirical (Python): %0.3f" % experiment(n_min, n_max, max_pairs))
+print("    - prediction (mathematical): %0.3f" % prediction())
+print("    - empirical (Python, based on %d pairs): " % max_pairs, end = "", flush = True)
+print("%0.3f" % experiment(n_min, n_max, max_pairs))
