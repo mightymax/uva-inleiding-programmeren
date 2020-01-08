@@ -1,3 +1,9 @@
+# Name: Mark Lindeman
+# Collaborators: Mees Lindeman
+#
+# This program proves Goldbach’s conjecture to be true for all even numbers up to and including 1000.
+# see https://progbg.mprog.nl/numbers/goldbach
+
 number = 1 #Keep track of current number testing for prime
 primes = []
 maxNumber = 1000

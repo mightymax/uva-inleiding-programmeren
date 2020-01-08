@@ -1,31 +1,36 @@
+# Name: Mark Lindeman
+#
+# This program plots a graph of the function f(x) = x^x between x=0 and x = 1.5 with steps of 0.01.
+# see https://progbg.mprog.nl/numbers/plot
+
 import matplotlib.pyplot as plt
 import numpy
 
-# the coordinates per point
+# the list of x-coordinates
 x_coords = numpy.arange(0, 1.5, 0.01)
 
-x_min = 0
-y_min = 1.5
+y_min = None
 
+#calculate y-coords list and get the min value for y
 y_coords = []
 for x in x_coords:
     y = x ** x
-    if y < y_min:
+    if y_min is None or y < y_min:
         y_min = y
         x_min = x
     y_coords.append(y)
 
 
-print(f"xmin = {x_min}, y_min = {y_min}")
 
+txt = "(xmin, ymin) = (%0.2f, %0.2f)" % (x_min, y_min)
 
 #get the middle of the Y-axis so we can display the text in the center of the plot
 y_mid = y_min + ((max(y_coords) - y_min) / 2)
 
 # plot points (y to x) with green circles
 plt.plot(x_coords, y_coords, 'b-', [x_min], [y_min], 'ro')
-plt.text(0, y_mid , "(x_min, y_min) = (%0.2f, %0.2f)" % (x_min, y_min), color = 'black', fontsize = 14)
+plt.text(0, y_mid , txt, color = 'black', fontsize = 14)
 
-print("(x_min, y_min) = (%0.2f, %0.2f)" % (x_min, y_min))
+print(txt)
 plt.show()
 # plt.savefig('plot.png')
