@@ -6,18 +6,24 @@ while nthPrime < 1:
     if nthPrimeAsFloat - nthPrime > 0:
         nthPrime = 0
 
-primeCount = 0 #Keep track of number of primes found so far
-number = 1 #Keep track of current number testing for prime
+
+# start primeCount with '1', since 2 is a prime
+primeCount = 1
+number = 1
 
 while primeCount < nthPrime:
-    number = number + 1
-    z = 0
-    for i in range(2, number):
-        if (number % i) == 0:
-            # not a prime
-            z = z + 1
+    c = 0
+    if (number > 1):
+        for i in range(2, number):
+            if (c < 1):
+                if number % i == 0:
+                    c = c + 1
 
-    if z == 0:
-        primeCount = primeCount + 1
+    if c == 0 and number > 1:
+        primeCount += 1
 
-print(f"{number}")
+    # increase loop by 2, even numbers are never primes
+    number += 2
+
+#end of the loop: number - 2 is now the prime we are looking for, see while loop
+print(number - 2)

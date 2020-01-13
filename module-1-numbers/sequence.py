@@ -1,27 +1,28 @@
+# start primeCount with '1', since 2 is a prime
 highestPrime = 10000
+primeCount = 1
+number = 1
+primes = [2]
 
-primeCount = 0 #Keep track of number of primes found so far
-number = 1 #Keep track of current number testing for prime
-
-primes = []
 
 while number < highestPrime:
-    number = number + 1
-    
-    z = 0
-    for i in range(2, number):
-        if (number % i) == 0:
-            # not a prime
-            z = z + 1
+    c = 0
+    if (number > 1):
+        for i in range(2, number):
+            if (c < 1):
+                if number % i == 0:
+                    c = c + 1
 
-    if z == 0:
-        primeCount = primeCount + 1
+    if c == 0 and number > 1:
+        primeCount += 1
         primes.append(number)
-    
+
+    # increase loop by 2, even numbers are never primes
+    number += 2
+
 max_length = 0
 min_prime = 0
 max_prime = 0
-
 
 ix = 0
 for prime in primes:
