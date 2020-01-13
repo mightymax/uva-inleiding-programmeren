@@ -20,8 +20,6 @@ for x in x_coords:
         x_min = x
     y_coords.append(y)
 
-
-
 txt = "(xmin, ymin) = (%0.2f, %0.2f)" % (x_min, y_min)
 
 #get the middle of the Y-axis so we can display the text in the center of the plot
@@ -29,8 +27,10 @@ y_mid = y_min + ((max(y_coords) - y_min) / 2)
 
 # plot points (y to x) with green circles
 plt.plot(x_coords, y_coords, 'b-', [x_min], [y_min], 'ro')
-plt.text(0, y_mid , txt, color = 'black', fontsize = 14)
+plt.text(0.18, y_mid , txt, color = 'black', fontsize = 14)
 
-print(txt)
+#Make sure the x-axis starts at y=0:
+plt.axis([0, 1.6, 0.6, 2.0])
+
 plt.show()
-# plt.savefig('plot.png')
+plt.savefig('plot.png')
