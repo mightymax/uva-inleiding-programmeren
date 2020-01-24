@@ -15,9 +15,13 @@ def assigment1():
 def assigment2():
     streak = Temperature.get_coldest_streak()
     no_of_days = len(streak)
+    min_temp = None
+    for temperature in streak:
+        if (not min_temp) or temperature.min < min_temp.min:
+            min_temp = temperature
     start_streak = streak.pop(0)
     end_streak = streak.pop()
-    print("The longest period of uninterrupted days that had freezing temperatures started on %s and ended on %s (%d days)." % (start_streak.date_format(), end_streak.date_format(), no_of_days))
+    print("The longest period of uninterrupted days that had freezing temperatures started on %s and ended on %s (%d days). The coldest day was %s, on that day it was %0.1fºC." % (start_streak.date_format(), end_streak.date_format(), no_of_days, min_temp.date_format(), min_temp.min))
 
 # Assignment 3: Summer days and tropical days
 def assigment3():
