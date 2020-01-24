@@ -39,7 +39,7 @@ def assigment4():
     for _temp in heat_wave:
         if _temp.is_tropical():
             tropical_day_count += 1
-    y = heat_wave[0].date_format(get_year = True)
+    y = heat_wave[0].year
     start_date = heat_wave[0].date_format()
     end_date = heat_wave.pop().date_format()
     print("The first year in which a heat wave occurred was %d: from %s thru %s there were %d summer days (>%dºC) including %d tropical days (>%dºC)." % (y, start_date, end_date, summer_day_count, Temperature.summer_min_temp, tropical_day_count, Temperature.tropical_min_temp))

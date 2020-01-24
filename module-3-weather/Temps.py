@@ -1,3 +1,6 @@
+from datetime import datetime
+import re, sys
+
 class Temperature:
     
     data = []
@@ -6,21 +9,30 @@ class Temperature:
     tropical_min_temp = 30
     
     def __init__(self, date = 19700101, tMin = 100, tMax = -256):
-        self.date = int(date)
+        self.date = Temperature.to_datetime(date)
         self.min = int(tMin)/10
         self.max = int(tMax)/10
-        self.year = self.date_format(get_year = True)
+    
+    def to_datetime(yyyymmdd):
+        match = re.search(r"^([1-2]\d{3})([0-1][0-9])([0-3][0-9])$", str(yyyymmdd))
+        if not match:
+            raise ValueError(f"Argument '{yyyymmdd}' is not a valid yyyymmdd format.")
+        return  datetime(int(match.group(1)), int(match.group(2)), int(match.group(3)))
         
-    def date_format(self, get_year = None):
-        months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-        yyyymmdd = str(self.date)
-        year = int(yyyymmdd[0:4])
-        if get_year:
-            return year
-        month_no = int(yyyymmdd[4:6])
-        day = int(yyyymmdd[6:8])
-        return "%d %s %d" % (day, months[month_no], year)
+    def date_format(self, format = '%A %d %B %Y'):
+        return self.date.strftime(format)
+
+    def day_diff(self, compare_temperature_object):
+        return self.yyyymmdd - compare_temperature_object.yyyymmdd
         
+    @property
+    def year(self):
+        return int(self.date_format('%Y'))
+            
+    @property
+    def yyyymmdd(self):
+        return int(self.date_format("%Y%m%d"))
+            
     def is_tropical(self, get_from_prop = 'max'):
         val = getattr(self, get_from_prop)
         return val >= Temperature.tropical_min_temp
@@ -66,9 +78,9 @@ class Temperature:
         for temperature in Temperature.data:
             if temperature.max < 0 and len(current_streak) == 0:
                 current_streak.append(temperature)
-            elif temperature.max < 0 and temperature.date - 1 == current_streak[len(current_streak) - 1].date:
+            elif temperature.max < 0 and temperature.day_diff(current_streak[len(current_streak) - 1]) == 1:
                 current_streak.append(temperature)
-            elif temperature.max < 0 and temperature.date - 1 != current_streak[len(current_streak) - 1].date:
+            elif temperature.max < 0 and temperature.day_diff(current_streak[len(current_streak) - 1]) != 1:
                 if len(current_streak) > len(streak):
                     streak = current_streak
                 current_streak = []
@@ -82,9 +94,9 @@ class Temperature:
         for temperature in Temperature.data:
             if temperature.is_summer() and len(current_streak) == 0:
                 current_streak.append(temperature)
-            elif temperature.is_summer() and temperature.date - 1 == current_streak[len(current_streak) - 1].date:
+            elif temperature.is_summer() and temperature.day_diff(current_streak[len(current_streak) - 1]) == 1:
                 current_streak.append(temperature)
-            elif temperature.is_summer() and temperature.date - 1 != current_streak[len(current_streak) - 1].date:
+            elif temperature.is_summer() and temperature.day_diff(current_streak[len(current_streak) - 1]) != 1:
                 if len(current_streak) > len(streak) and len(current_streak) >= 5:
                     tropical_day_count = 0
                     for _temp in current_streak:
