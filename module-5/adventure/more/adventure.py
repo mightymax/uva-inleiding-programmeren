@@ -206,13 +206,21 @@ def proc(command):
     # Escape route
     if command == "help":
         print("You can move by typing directions such as EAST/WEST/IN/OUT")
-        print("QUIT quits the game.")
-        print("HELP prints instructions for the game.")
-        print("LOOK lists the complete description of the room and its contents.")
+        print("QUIT         quits the game")
+        print("HELP         prints instructions for the game")
+        print("LOOK         lists the complete description of the room and its contents")
+        print("INVENTORY    Show all items in inventory")
+        print("TAKE <ITEM>  takes an item from a room and stores it in the inventory")
+        print("DROP <ITEM>  Drops an item from the inventory into the current room")
 
         # Not part of assignment
-        print("CHEAT prints all possible moves.")
-        print("MOVE <n> move directluy to room <n> (if room exists).")
+        print("\nCheats/Debug commands:")
+        print("===========================================================================")
+        print("DROP ALL     Drops all items from the inventory into the current room")
+        print("MOVES        prints all possible moves")
+        print("WIN          simulate winning moves")
+        print("RESET        resets game")
+        print("MOVE <n>     move directly to room <n> (if room exists)")
         # END
     elif command == "reset":
         adventure.reset()
@@ -312,7 +320,7 @@ if __name__ == "__main__":
     adventure = Adventure(game_name)
     
     # Welcome user
-    print("Welcome to Adventure.\n")
+    print("**** Welcome to Adventure ****\n")
 
     # Print very first room description
     print(adventure.get_description())
@@ -320,10 +328,21 @@ if __name__ == "__main__":
     # Prompt the user for commands until they type QUIT
     while True:
 
-        # Prompt
-        command = adventure.get_command(input("> ")).lower()
-        if command == "quit":
+        try:
+            command = adventure.get_command(input("> ")).lower()
+            if command == "quit":
+                break
+            proc(command)
+        except KeyboardInterrupt:
+            print("")
             break
-        proc(command)
+        except EOFError: 
+            print("")
+            break;
+        except:
+            print(f"Bugger, something unexpected happened ¯\(°_o)/¯.")
+            break
+
+        # Prompt
         
 
