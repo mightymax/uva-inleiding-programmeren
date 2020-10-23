@@ -16,7 +16,7 @@ canvas.focus_set()
 time = 0
 planktons = []
 fish_list = []
-game_valid = 1
+game_valid = True
 
 class Keyboard:
     def __init__(self):
@@ -95,16 +95,16 @@ class Fish:
                             fill=self.color, outline='black')
 
 def game_loss():
+    global game_valid
     canvas.create_text(canvas_width/2,canvas_height/2,text="Game Over", \
                             font=('arial 60 bold'), fill='firebrick')
-    game_valid = 0
-    return game_valid
+    game_valid = False
 
 def game_won():
+    global game_valid
     canvas.create_text(canvas_width/2,canvas_height/2,text="You Win!", \
                             font=('arial 60 bold'), fill='firebrick')
-    game_valid = 0
-    return game_valid
+    game_valid = False
 
 class Shark:
     size_start = 10
@@ -176,7 +176,10 @@ if Shark.size > 30:
 shark = Shark(canvas_width/2, canvas_height/2)
 
 def time_step():
-    global time
+    global time, game_valid
+
+    if False == game_valid:
+        return
     canvas.delete("all")
     if random.randint(0, avr_plankton_time)==0:
         plankton = Plankton(canvas.winfo_width(), random.randint(0, canvas.winfo_height()))
