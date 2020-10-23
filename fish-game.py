@@ -4,20 +4,6 @@ import sys
 import os
 import random
 
-root = tkinter.Tk()
-root.title("Small Shark, Big Pond!")
-
-canvas_width = 1000
-canvas_height = 800
-canvas = tkinter.Canvas(root, width=canvas_width, height=canvas_height)
-canvas.config(bg="lightskyblue")
-canvas.pack()
-canvas.focus_set()
-time = 0
-planktons = []
-fish_list = []
-game_valid = True
-
 class Keyboard:
     def __init__(self):
         self.keys = {}
@@ -33,7 +19,6 @@ class Keyboard:
             return self.keys[key]
         return False
 
-keyboard = Keyboard()
 
 class PosRad:
     def __init__(self, x, y, rad):
@@ -94,17 +79,6 @@ class Fish:
                             self.posrad.x + self.posrad.rad, self.posrad.y + self.posrad.rad, \
                             fill=self.color, outline='black')
 
-def game_loss():
-    global game_valid
-    canvas.create_text(canvas_width/2,canvas_height/2,text="Game Over", \
-                            font=('arial 60 bold'), fill='firebrick')
-    game_valid = False
-
-def game_won():
-    global game_valid
-    canvas.create_text(canvas_width/2,canvas_height/2,text="You Win!", \
-                            font=('arial 60 bold'), fill='firebrick')
-    game_valid = False
 
 class Shark:
     size_start = 10
@@ -169,11 +143,40 @@ class Shark:
                             self.posrad.x + self.posrad.rad, self.posrad.y + self.posrad.rad, \
                             fill="royalblue", outline = "navy", width=4)
 
+root = tkinter.Tk()
+root.title("Small Shark, Big Pond!")
+
+canvas_width = 1000
+canvas_height = 800
+canvas = tkinter.Canvas(root, width=canvas_width, height=canvas_height)
+canvas.config(bg="lightskyblue")
+canvas.pack()
+canvas.focus_set()
+time = 0
+planktons = []
+fish_list = []
+game_valid = True
+
+keyboard = Keyboard()
+
 avr_plankton_time = 20
 avr_fish_time = 11
 if Shark.size > 30:
     avr_fish_time = 30
 shark = Shark(canvas_width/2, canvas_height/2)
+
+
+def game_loss():
+    global game_valid
+    canvas.create_text(canvas_width/2,canvas_height/2,text="Game Over", \
+                            font=('arial 60 bold'), fill='firebrick')
+    game_valid = False
+
+def game_won():
+    global game_valid
+    canvas.create_text(canvas_width/2,canvas_height/2,text="You Win!", \
+                            font=('arial 60 bold'), fill='firebrick')
+    game_valid = False
 
 def time_step():
     global time, game_valid
@@ -209,10 +212,6 @@ def key_down(e):
 
 def key_up(e):
     keyboard.key_up(e.keysym)
-
-#def restart_program():
-#    python = sys.executable
-#    os.execl(python, python * sys.argv)
 
 def main():
     root.bind("<KeyPress>", key_down)
